@@ -1,6 +1,7 @@
 import { AbilityConstant, ConfigurationConstant, UIAbility, Want } from '@kit.AbilityKit';
 import { hilog } from '@kit.PerformanceAnalysisKit';
 import { window } from '@kit.ArkUI';
+import { BusinessError } from '@kit.BasicServicesKit';
 
 const DOMAIN = 0x0000;
 
@@ -14,7 +15,21 @@ export default class EntryAbility extends UIAbility {
     hilog.info(DOMAIN, 'testTag', '%{public}s', 'Ability onDestroy');
   }
 
-  onWindowStageCreate(windowStage: window.WindowStage): void {
+  onWindowStageCreate(windowStage: window.WindowStage) {
+    // 1.获取应用主窗口。
+    let windowClass: window.Window | undefined = undefined;
+    windowStage.getMainWindow().then(windowClass => {
+      console.info('Succeeded in obtaining the main window. Data: ' + JSON.stringify(windowClass));
+      // 2.设置窗口全屏，实现沉浸式效果。
+      windowClass.setWindowLayoutFullScreen(true).then(() => {
+        console.info('Succeeded in setting the window layout to full-screen mode.');
+      }).catch((e: BusinessError) => {
+        console.error('Failed to set the window layout to full-screen mode. Cause:' + JSON.stringify(e));
+      })
+    }).catch((err: BusinessError) => {
+      console.error('Failed to obtain the main window. Cause: ' + JSON.stringify(err));
+    })
+
     // Main window is created, set main page for this ability
     hilog.info(DOMAIN, 'testTag', '%{public}s', 'Ability onWindowStageCreate');
 

@@ -14,11 +14,11 @@
     },
     {
       "name": "title",
-      "value": "国际化测试"
+      "value": "i18n test"
     },
     {
       "name": "inputPlaceholder",
-      "value": "国际化测试"
+      "value": "please enter i8n"
     }
   ]
 }

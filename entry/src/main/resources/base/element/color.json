@@ -3,6 +3,10 @@
     {
       "name": "start_window_background",
       "value": "#FFFFFF"
+    },
+    {
+      "name": "test_color",
+      "value": "#d72626"
     }
   ]
 }
