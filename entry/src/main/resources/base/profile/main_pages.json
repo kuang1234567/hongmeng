@@ -4,6 +4,12 @@
     "pages/Second",
     "pages/languagePage",
     "pages/ScrollPage",
-    "pages/StckPage"
+    "pages/StckPage",
+    "pages/relativecontianerPage",
+    "pages/relativecontainerPage2",
+    "pages/style_extend_Page",
+    "pages/CalendarPicker_DatePicker_Page",
+    "pages/statePage",
+    "pages/project_task_Page"
   ]
 }

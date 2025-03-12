@@ -7,6 +7,14 @@
     {
       "name": "test_color",
       "value": "#d72626"
+    },
+    {
+      "name": "title_color",
+      "value": "#7c7c90"
+    },
+    {
+      "name": "text_color",
+      "value": "#2b2d5d"
     }
   ]
 }
