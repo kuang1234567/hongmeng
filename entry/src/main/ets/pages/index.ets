@@ -2,7 +2,7 @@
 // 导入页面路由模块
 import { router } from '@kit.ArkUI';
 import { BusinessError } from '@kit.BasicServicesKit';
-import DataUtil from '../utils/DataFormt'
+import DataUtil from '../utils/DataFormat'
 
 @Entry
 @Component
@@ -25,8 +25,12 @@ struct Index {
         .backgroundColor('#0D9FFB')
         .width('40%')
         .height('8%')
-      }.justifyContent(FlexAlign.Center).alignItems(HorizontalAlign.Center)
-      .width('100%').height('80%').onClick(()=>{
+      }
+      .justifyContent(FlexAlign.Center)
+      .alignItems(HorizontalAlign.Center)
+      .width('100%')
+      .height('80%')
+      .onClick(() => {
         this.message = '2025-3-4'
         console.info(`Succeeded in clicking the 'Next' button.`)
         // 跳转到第二页
