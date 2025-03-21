@@ -22,7 +22,8 @@ export struct TodayTask {
             }.width('100%')
 
             Text(`${item.taskBeginDate}-${item.taskEndDate}`).fontColor('#787878')
-            Button('生活').width(80).height(25).backgroundColor('#9a2323')
+            Button(item.taskTitle == 1 ? '工作' : item.taskTitle == 2 ?
+              '学习' : '娱乐').width(80).height(25).backgroundColor('#9a2323')
           }
           .width('100%')
           .alignItems(HorizontalAlign.Start)
