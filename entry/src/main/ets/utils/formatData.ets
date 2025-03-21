@@ -80,3 +80,12 @@ export function getRandomDateCurrentMonth() {
   let randomDay = Math.floor(Math.random() * (maxDay - minDay + 1)) + minDay
   return `${year}-${String(mouth).padStart(2, '0')}-${String(randomDay).padStart(2, '0')}`
 }
+
+/**
+ * @description: 小时分钟日期的补零
+ */
+export function transformHoursAndMinutes(value: number) {
+  let tempValue = JSON.stringify(value)
+  tempValue = tempValue.padStart(2, '0')
+  return tempValue
+}

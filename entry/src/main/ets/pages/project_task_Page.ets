@@ -1,106 +1,87 @@
 import { formatDate } from '../utils/formatData'
-import createTaskData from '../viewModel/taskModel'
+import createTaskData, { TaskModel } from '../viewModel/taskModel'
+import { Statistics } from '../view/propLinkPage'
+import { TodayTask } from '../view/ForEach'
+//路由通信
+//在鸿蒙中有两种方案
+//1.Navigation： 这种方案是目前官方推荐使用，但是这种方案涵盖的内容比较多。底部tabbar，顶部菜单，返回等等。集合了页面中各种跳转,返回，菜单等功能。
+//2.router路由：router路由类似于以前vue或者react框架中提供的路由对象。在代码中调用他的api来实现路由的跳转，返回，参数的传递。 使用于多模块之间的页面切换。
+//router提供了两种路由跳转方法： 1.pushUrl：代表跳转页面的时候，将老的地址和新的地址都加入到页面执行栈中。可以实现跳转后记录信息，可以返回到指定的页面。
+//                          2.replaceUrl：代表替换当前这个页面的地址。直接覆盖访问地址。无法记录历史。无法返回跳转之前的页面
+//router的模式：
+//1.Standard：多实例模式，按pushUrl来跳转，每次跳转路径都会放在执行栈中，不会管执行栈中是否存在同样的路由路径。
+//2.single：单实例模式，按pushUrl来跳转，每次跳转的路径都会放在执行栈，如果下次访问同一个路径，默认将执行栈中存在的路径放在栈顶。执行栈中同样的路径之后值存在一个。
+import { router } from '@kit.ArkUI';
 
 @Extend(Text)
 function TextTitleStyle(size: number) {
   .fontSize(size).fontColor('#0c0b3e').fontWeight(FontWeight.Bold)
 }
 
-@Extend(Column)
-function ColumnTtiemtyle(itemWidth: string, itemHeight: string, itemColor: string) {
-  .width(itemWidth)
-  .height(itemHeight)
-  .alignItems(HorizontalAlign.Start)
-  .backgroundColor(itemColor)
-  .borderRadius(20)
-  .justifyContent(FlexAlign.SpaceAround)
-  .padding(10)
-}
-
 @Entry
 @Component
 struct Project_task_Page {
-  // @State message: string = 'Hello World';
-  scroller: Scroller = new Scroller()
-  private taskArr: number[] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+  @StorageLink('taskList') taskList: Array<TaskModel> = []
+
+  /**
+   * @description: 获取今日任务
+   */
+  getTodayTaskList() {
+    let today = formatDate(new Date().getTime(), 'yyyy-mm-dd')
+    let arr = this.taskList.filter((item) => {
+      return item.taskTime == today
+    })
+    return arr
+  }
 
   aboutToAppear(): void {
     //模拟假数据
-    console.log('TaskList', JSON.stringify(createTaskData.initData()))
+    this.taskList = createTaskData.initData()
   }
 
   build() {
-    Column() {
-      Text('你好,小王').margin({ bottom: 15 }).TextTitleStyle(30)
-      Text('让每天的工作效率提高').fontSize(16).fontColor('#5c5e5f').margin({ bottom: 15 })
-      Text('我的计划').TextTitleStyle(26)
-      Row() {
-        Column() {
-          Column() {
-            Image($r('app.media.app_icon')).width(70)
-            Text(`已完成`).TextTitleStyle(18)
-            Text(`${0}任务`).fontSize(16)
-          }.ColumnTtiemtyle('100%', '55%', '#85c9e5')
+    RelativeContainer() {
+      Column() {
+        Text('你好,小王').margin({ bottom: 15 }).TextTitleStyle(30)
+        Text('让每天的工作效率提高').fontSize(16).fontColor('#5c5e5f').margin({ bottom: 15 })
+        Statistics({ title: '我的计划', taskList: this.taskList })
+        Row() {
+          Text('今日任务').TextTitleStyle(26)
+          Text('查看更多').fontSize(16).fontColor('#0c0b3e')
+        }
+        .width('100%')
+        .margin({ top: 15, bottom: 15 })
+        .justifyContent(FlexAlign.SpaceBetween)
+        .alignItems(VerticalAlign.Bottom)
 
-          Column() {
-            Image($r('app.media.app_icon')).width(40)
-            Text(`等待中`).TextTitleStyle(18)
-            Text(`${0}任务`).fontSize(16)
-          }.ColumnTtiemtyle('100%', '40%', '#e78685')
-        }.width('49%').height('100%').justifyContent(FlexAlign.SpaceBetween)
+        TodayTask({ taskList: this.getTodayTaskList() })
 
-        Column() {
-          Column() {
-            Image($r('app.media.app_icon')).width(40)
-            Text(`未完成`).TextTitleStyle(18)
-            Text(`${0}任务`).fontSize(16)
-          }.ColumnTtiemtyle('100%', '40%', '#717ce7')
-
-          Column() {
-            Image($r('app.media.app_icon')).width(70)
-            Text(`未来任务`).TextTitleStyle(18)
-            Text(`${0}任务`).fontSize(16)
-          }.ColumnTtiemtyle('100%', '55%', '#a7e9ba')
-
-        }.width('49%').height('100%').justifyContent(FlexAlign.SpaceBetween)
-      }.width('100%').height(300).justifyContent(FlexAlign.SpaceBetween)
-
-      Row() {
-        Text('今日任务').TextTitleStyle(26)
-        Text('查看更多').fontSize(16).fontColor('#0c0b3e')
       }
       .width('100%')
-      .margin({ top: 15, bottom: 15 })
-      .justifyContent(FlexAlign.SpaceBetween)
-      .alignItems(VerticalAlign.Bottom)
+      .height('100%')
+      .padding(10)
+      .backgroundColor('#eef0f2')
+      .alignItems(HorizontalAlign.Start)
 
-      Scroll(this.scroller) {
-        Column() {
-          ForEach(this.taskArr, (item: number) => {
-            Column({ space: 10 }) {
-              Row() {
-                Image($r('app.media.app_icon')).width(30).height(20).margin({ right: 20 })
-                Text('完成HarmonyOS第一阶段项目').TextTitleStyle(16)
-              }.width('100%')
-
-              Text(`9:00-12:00`).fontColor('#787878')
-              Button('生活').width(80).height(25).backgroundColor('#9a2323')
-            }
-            .width('100%')
-            .alignItems(HorizontalAlign.Start)
-            .backgroundColor(Color.White)
-            .borderRadius(15)
-            .padding(10)
-            .margin({ bottom: 10 })
-          }, (item: string) => item)
-        }
-      }.scrollBar(BarState.Off).edgeEffect(EdgeEffect.Spring).width('100%').height(230)
-
+      //添加按钮
+      Stack() {
+        Column().width(50).height(50).backgroundColor('#4f55c4').borderRadius('50%')
+        Text('+').fontSize(40).fontWeight(FontWeight.Bold).fontColor(Color.White)
+      }.alignRules({
+        right: { anchor: '__container__', align: HorizontalAlign.End },
+        bottom: { anchor: '__container__', align: VerticalAlign.Bottom }
+      }).offset({ x: -20, y: -20 }).onClick(() => {
+        router.pushUrl({
+          url: 'pages/CalendarPicker_DatePicker_Page'
+        }, router.RouterMode.Standard, (err) => {
+          if (err) {
+            console.log('跳转报错', err)
+          }
+        })
+        // router.replaceUrl({
+        //   url: 'pages/CalendarPicker_DatePicker_Page'
+        // })
+      })
     }
-    .width('100%')
-    .height('100%')
-    .padding(10)
-    .backgroundColor('#eef0f2')
-    .alignItems(HorizontalAlign.Start)
   }
 }

@@ -6,6 +6,12 @@ import { BusinessError } from '@kit.BasicServicesKit';
 const DOMAIN = 0x0000;
 
 export default class EntryAbility extends UIAbility {
+  //EnterAbility中初始化LocalStorage实现将storage共享到多个页面 视图
+  para: Record<string, number> = {
+    'PropA': 47
+  };
+  storage: LocalStorage = new LocalStorage(this.para);
+
   onCreate(want: Want, launchParam: AbilityConstant.LaunchParam): void {
     this.context.getApplicationContext().setColorMode(ConfigurationConstant.ColorMode.COLOR_MODE_NOT_SET);
     hilog.info(DOMAIN, 'testTag', '%{public}s', 'Ability onCreate');
@@ -32,8 +38,8 @@ export default class EntryAbility extends UIAbility {
 
     // Main window is created, set main page for this ability
     hilog.info(DOMAIN, 'testTag', '%{public}s', 'Ability onWindowStageCreate');
-
-    windowStage.loadContent('pages/Index', (err) => {
+    //绑定初始化的ui状态存储
+    windowStage.loadContent('pages/Index', this.storage, (err) => {
       if (err.code) {
         hilog.error(DOMAIN, 'testTag', 'Failed to load the content. Cause: %{public}s', JSON.stringify(err));
         return;

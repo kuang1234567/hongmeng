@@ -1,4 +1,4 @@
-import { formatDate } from '../utils/formatData'
+import { formatDate, getRandomDateCurrentMonth } from '../utils/formatData'
 
 enum taskStatusENum {
   DONE = 'done',
@@ -65,9 +65,10 @@ class createTaskModel {
   private taskList: TaskModel[] = []
 
   initData() {
-    for (let index = 0; index < 20; index++) {
+    for (let index = 0; index < 100; index++) {
       let task =
-        new TaskModel(`${index + 1}`, `计划要完成的任务${index + 1}`, `2025-7-26`, `这是任务的详情${index + 1}`,
+        new TaskModel(`${index + 1}`, `计划要完成的任务${index + 1}`, getRandomDateCurrentMonth(),
+          `这是任务的详情${index + 1}`,
           `09:00`, `12:00`, 1, 1,)
       this.taskList.push(task)
     }

@@ -10,6 +10,9 @@
     "pages/style_extend_Page",
     "pages/CalendarPicker_DatePicker_Page",
     "pages/statePage",
-    "pages/project_task_Page"
+    "pages/project_task_Page",
+    "pages/detailPage",
+    "pages/storageLocalstoragePage",
+    "pages/appStoragePage"
   ]
 }
