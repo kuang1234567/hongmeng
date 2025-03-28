@@ -13,6 +13,10 @@
     "pages/project_task_Page",
     "pages/detailPage",
     "pages/storageLocalstoragePage",
-    "pages/appStoragePage"
+    "pages/appStoragePage",
+    "pages/providerConsumePage",
+    "pages/todoListPage",
+    "pages/flexPage",
+    "pages/imagePage"
   ]
 }

@@ -6,8 +6,14 @@ import { ObjectLinkChild } from '../view/ObjectLinkChild'
 struct ObservedObjectLinkPage {
   //在鸿蒙开发中@State装饰的变量，一旦变量发生改变页面更新。但仅能观察到第一层的变化，遇到复杂数据结构，数据更新会有差别。
   @State student: Student = new Student('001', '小王八', new Pet('1', '金毛'))
-  @State schoolStudentList: Student[] =
-    [new Student('002', '小贝贝', new Pet('1', '拉布拉多')), new Student('003', '小笔笔', new Pet('1', '哈士奇')),]
+  // @State schoolStudentList: Student[] =
+  //   [new Student('002', '小贝贝', new Pet('1', '拉布拉多')), new Student('003', '小笔笔', new Pet('1', '哈士奇')),]
+  @State schoolStudentList: ObjectClass = new ObjectClass()
+
+  aboutToAppear(): void {
+    this.schoolStudentList =
+      [new Student('002', '小贝贝', new Pet('1', '拉布拉多')), new Student('003', '小笔笔', new Pet('1', '哈士奇')),]
+  }
 
   build() {
     Column() {
@@ -26,7 +32,8 @@ struct ObservedObjectLinkPage {
       //嵌套对象的解决： 在Pet类上加上@Observed，@ObjectLink放在组件中定义数据，因为@ObjectLink无法在@entey组件中使用
       EditPetName({ pet: this.student.pet })
       //数据对象的解决: 在Sturent类上加@Observed
-      Text(`${JSON.stringify(this.schoolStudentList)}`)
+      Text(`${JSON.stringify(this.schoolStudentList)}`).fontColor(Color.Red)
+      Text(`父组件学生的名字${this.schoolStudentList[0].name}`)
       ForEach(this.schoolStudentList, (item: Student, index) => {
         ObjectLinkChild({ student: item, index: index })
       }, (item: Student) => {

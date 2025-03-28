@@ -23,6 +23,7 @@ struct ScrollExample {
           }, (item: string) => item)
         }.width('100%')
       }
+      .align(Alignment.Top) //滚动内容的对齐方式
       .scrollable(ScrollDirection.Vertical) // 滚动方向纵向
       .scrollBar(BarState.On) // 滚动条常驻显示 显示为On ，不显示为Off
       .scrollBarColor(Color.Gray) // 滚动条颜色
