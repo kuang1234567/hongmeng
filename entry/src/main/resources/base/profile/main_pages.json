@@ -17,6 +17,7 @@
     "pages/providerConsumePage",
     "pages/todoListPage",
     "pages/flexPage",
-    "pages/imagePage"
+    "pages/imagePage",
+    "pages/gridPage"
   ]
 }
